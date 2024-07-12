@@ -1,38 +1,48 @@
+#ifndef ENEMY_HPP
+#define ENEMY_HPP
+
+
+#include <iostream>
+#include <string>
+
 #include "Character.hpp"
+
 
 class Enemy {
 public:
-    Enemy();
+    Enemy() = default;
     Enemy(int health, int attack){
-        this->health = health;
-        this->attack = attack;
+        this->enemyHealth = health;
+        this->enemyAttack = attack;
     }
 
     void setHealth(int health){
-        this->health = health;
+        this->enemyHealth = health;
     
     }
     void setAttack(int attack){
-        this->attack = attack;
+        this->enemyAttack = attack;
     }
     int getHealth(){
-        return health;
+        return enemyHealth;
     }
     int getAttack(){
-        return attack;
+        return enemyAttack;
     }
-    void takeDamage(int damage){
-        health -= damage;
+    void enemyTakeDamage(int damage){
+        enemyHealth -= damage;
     }
     void attackPlayer(Character &player){
-        player.takeDamage(attack);
+        player.playerTakeDamage(enemyAttack);
     }
     void printStats(){
-        std::cout << "Health: " << health << "\n";
-        std::cout << "Attack: " << attack << "\n";
+        std::cout << "Health: " << enemyHealth << "\n";
+        std::cout << "Attack: " << enemyAttack << "\n";
     }
     
 private:
-    int health;
-    int attack;
+    int enemyHealth;
+    int enemyAttack;
 };
+
+#endif
