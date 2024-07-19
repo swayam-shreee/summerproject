@@ -12,13 +12,14 @@ class Room {
 
     Room(){
         roomName = "Empty";
-        roomDescription = "None";
-        
-        
+        roomDescription = "None";   
+        //enemies = nullptr;
+        enemies = nullptr;
     }
      Room(std::string name, std::string description /*,std::string secret*/){
         roomName = std::move(name);
         roomDescription = std::move(description);
+        enemies = nullptr;
         //this->secretDescription = secret;
      }
      
@@ -30,11 +31,11 @@ class Room {
         return roomDescription;
     }
 
-    void setEnemies(Enemy& en){
+    void setEnemies(Enemy* en){
         enemies = en;
     }
 
-    Enemy& getEnemy() {
+    Enemy* getEnemy() {
         return enemies;
     }
 
@@ -65,7 +66,7 @@ class Room {
         std::string roomDescription;
         Item items;
         std::vector<std::string> directions;
-        Enemy enemies;
+        Enemy *enemies;
         //std::string secretDescription;
         
 

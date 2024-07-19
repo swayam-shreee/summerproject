@@ -11,12 +11,23 @@
 class Enemy {
 public:
     Enemy() {
+        enemyName = "None";
         enemyHealth = 0;
         enemyAttack = 0;
     }
-    Enemy(int health, int attack){
+
+    Enemy(std::string& name, int health, int attack){
+        enemyName = name;
         enemyHealth = health;
         enemyAttack = attack;
+    }
+
+    void setName(std::string name){
+        enemyName = name;
+    }
+
+    std::string& getName() {
+        return enemyName;
     }
 
     void setHealth(int health){
@@ -45,6 +56,7 @@ public:
 
     
 private:
+    std::string enemyName;
     int enemyHealth;
     int enemyAttack;
 };

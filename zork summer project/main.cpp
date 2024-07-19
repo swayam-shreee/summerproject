@@ -86,24 +86,28 @@ int main()
     Enemy forestGoblin1 = Enemy();
     forestGoblin1.setHealth(20);
     forestGoblin1.setAttack(10);
+    forestGoblin1.setName("Forest Goblin");
 
     Enemy forestGoblin2 = Enemy();
     forestGoblin2.setHealth(20);
     forestGoblin2.setAttack(10);
+    forestGoblin2.setName("Forest Goblin");
 
     Enemy hauntedSpirit1 = Enemy();
     hauntedSpirit1.setHealth(30);
     hauntedSpirit1.setAttack(15);
+    hauntedSpirit1.setName("Haunted Spirit");
 
     Enemy hauntedSpirit2 = Enemy();
     hauntedSpirit2.setHealth(30);
     hauntedSpirit2.setAttack(15);
+    hauntedSpirit2.setName("Haunted Spirit");
 
     // set the enemies in the rooms
-    mysteriousForest.setEnemies(forestGoblin1);
-    overgrownGarden.setEnemies(forestGoblin2);
-    creepyGraveyard.setEnemies(hauntedSpirit1);
-    undergroundPassage.setEnemies(hauntedSpirit2);
+    mysteriousForest.setEnemies(&forestGoblin1);
+    overgrownGarden.setEnemies(&forestGoblin2);
+    creepyGraveyard.setEnemies(&hauntedSpirit1);
+    undergroundPassage.setEnemies(&hauntedSpirit2);
 
     // Item(const std::string &name, const std::string &purpose, unsigned health, unsigned weight, unsigned damage)
 
@@ -183,104 +187,28 @@ int main()
         else if (command == "attack")
         {
 
+            if(currentRoom->getEnemy() != NULL){
 
-
-            if (currentRoom->getEnemy().getEnemyHealth() <= 0)
-                {
-                    std::cout << "You have defeated the enemy." << "\n";
-                }
-                else
-                {
-                    std::cout << "You attack the enemy." << "\n";
-                    std::cout << "Enemy's stats: " << "\n";
-                    currentRoom->getEnemy().enemyTakeDamage(bob.getDamage());
-                    currentRoom->getEnemy().printEnemyStats();
-                    bob.playerTakeDamage(currentRoom->getEnemy().getEnemyAttack());
-                    std::cout << "\nThe enemy attacks you." << "\n"
-                              << "Your stats: \n";
-                    bob.printCharStats();
-                    std::cout << "\n";
-                }
-    
-            /*if (bob.getX() == 0 && bob.getY() == 0)
-            {
-
-                // work in progress. change loop to require user input to attack every time.
-
-                if (forestGoblin1.getHealth() <= 0)
-                {
-                    std::cout << "You have defeated the enemy." << "\n";
-                }
-                else
-                {
-                    forestGoblin1.enemyTakeDamage(bob.getDamage());
-                    forestGoblin1.printEnemyStats();
-                    std::cout << "You attack the enemy." << "\n";
-                    std::cout << "Enemy's stats: " << "\n";
-                    bob.playerTakeDamage(forestGoblin1.getAttack());
-                    std::cout << "\nThe forest goblin attacks you." << "\n"
-                              << "Your stats: \n";
-                    bob.printCharStats();
-                    std::cout << "\n";
-                }
+                if (currentRoom->getEnemy()->getEnemyHealth() <= 0)
+                    {
+                        std::cout << "You have defeated the enemy." << "\n";
+                    }
+                    else
+                    {
+                        std::cout << "You attack the enemy." << "\n";
+                        std::cout << currentRoom->getEnemy()->getName() << "'s stats: " << "\n";
+                        currentRoom->getEnemy()->enemyTakeDamage(bob.getDamage());
+                        currentRoom->getEnemy()->printEnemyStats();
+                        bob.playerTakeDamage(currentRoom->getEnemy()->getEnemyAttack());
+                        std::cout << "\nThe "<< currentRoom->getEnemy()->getName() << " attacks you." << "\n"
+                                << "Your stats: \n";
+                        bob.printCharStats();
+                        std::cout << "\n";
+                    }
+            } else {
+                std::cout << "There is no enemy in this room." << "\n";
+        
             }
-            else if (bob.getX() == 0 && bob.getY() == 2)
-            {
-                if (forestGoblin2.getHealth() <= 0)
-                {
-                    std::cout << "You have defeated the enemy." << "\n";
-                }
-                else
-                {
-                    forestGoblin2.enemyTakeDamage(bob.getDamage());
-                    forestGoblin2.printEnemyStats();
-                    std::cout << "You attack the enemy." << "\n";
-                    std::cout << "Enemy's stats: " << "\n";
-                    bob.playerTakeDamage(forestGoblin2.getAttack());
-                    std::cout << "\nThe forest goblin attacks you." << "\n"
-                              << "Your stats: \n";
-                    bob.printCharStats();
-                    std::cout << "\n";
-                }
-            }
-            else if (bob.getX() == 2 && bob.getY() == 0)
-            {
-                if (hauntedSpirit1.getHealth() <= 0)
-                {
-                    std::cout << "You have defeated the enemy." << "\n";
-                }
-                else
-                {
-                    hauntedSpirit1.enemyTakeDamage(bob.getDamage());
-                    hauntedSpirit1.printEnemyStats();
-                    std::cout << "You attack the enemy." << "\n";
-                    std::cout << "Enemy's stats: " << "\n";
-                    bob.playerTakeDamage(hauntedSpirit1.getAttack());
-                    std::cout << "\nThe haunted spirit attacks you." << "\n"
-                              << "Your stats: \n";
-                    bob.printCharStats();
-                    std::cout << "\n";
-                }
-            }
-            else if (bob.getX() == 2 && bob.getY() == 2)
-            {
-                if (hauntedSpirit2.getHealth() <= 0)
-                {
-                    std::cout << "You have defeated the enemy." << "\n";
-                }
-                else
-                {
-                    hauntedSpirit2.enemyTakeDamage(bob.getDamage());
-                    hauntedSpirit2.printEnemyStats();
-                    std::cout << "You attack the enemy." << "\n";
-                    std::cout << "Enemy's stats: " << "\n";
-                    bob.playerTakeDamage(hauntedSpirit2.getAttack());
-                    std::cout << "\nThe haunted spirit attacks you." << "\n"
-                              << "Your stats: \n";
-                    bob.printCharStats();
-                    std::cout << "\n";
-                }
-            }*/
         }
         else if (command == "examine")
         {
