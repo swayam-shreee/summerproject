@@ -110,11 +110,11 @@ public:
         potion.useItem();
     }
 
-    void addInventory(const Item& item){
+    void addInventory(Item* item){
         inventory.push_back(item);
     }
 
-    std::vector<Item> getInventory(){
+    std::vector<Item*> getInventory(){
         return inventory;
     }
 
@@ -122,7 +122,7 @@ public:
         std::cout << "You have: \n";
         for (int i = 0; i < inventory.size(); i++)
         {
-            std::cout << inventory[i].getItemName() << "\n";
+            std::cout << inventory[i]->getItemName() << "\n";
         }
     }
 
@@ -134,7 +134,7 @@ public:
 
     bool searchInventory(std::string it){
         for(int i = 0;i < inventory.size();i++){
-                if(inventory[i].getItemName() == it){
+                if(inventory[i]->getItemName() == it){
                     return true;
                 }
             }
@@ -145,7 +145,7 @@ public:
 
     void removeItem(Item& it){
             for(int i = 0;i < inventory.size();i++){
-                if(inventory[i].getItemName() == it.getItemName()){
+                if(inventory[i]->getItemName() == it.getItemName()){
                     inventory.erase(inventory.begin() + i);
                     return;
                 }
@@ -159,7 +159,7 @@ public:
 private:
     unsigned x;
     unsigned y;
-    std::vector<Item> inventory;
+    std::vector<Item*> inventory;
     unsigned charHealth;
     unsigned charAttack;
     unsigned charDamage;

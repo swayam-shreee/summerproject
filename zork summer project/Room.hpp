@@ -39,13 +39,15 @@ class Room {
         return enemies;
     }
 
-    void setItems(Item& it){
+    Item* getItems(){
+        return items;
+    }
+
+    void setItems(Item* it){
         items = it;
     }
 
-    Item getItems(){
-        return items;
-    }
+
 
     /*bool hasItem(){
         if(items.getItems() == NULL ){
@@ -64,9 +66,9 @@ class Room {
     private:
         std::string roomName;
         std::string roomDescription;
-        Item items;
+        Item* items;
         std::vector<std::string> directions;
-        Enemy *enemies;
+        Enemy* enemies;
         //std::string secretDescription;
         
 

@@ -59,12 +59,12 @@ int main()
     Item healthPotion("Health Potion", "Restores health.", 50, 10, 0);
     Item magicSword("Magic Sword", "Increases attack power.", 100, 20, 10);
 
-    abandonedCottage.setItems(lantern);
-    overgrownGarden.setItems(key);
-    hiddenClearing.setItems(runestone);
-    secretLibrary.setItems(ancientTome);
-    shadowyAlcove.setItems(amulet);
-    cryptEntrance.setItems(magicSword);
+    abandonedCottage.setItems(&lantern);
+    overgrownGarden.setItems(&key);
+    hiddenClearing.setItems(&runestone);
+    secretLibrary.setItems(&ancientTome);
+    shadowyAlcove.setItems(&amulet);
+    cryptEntrance.setItems(&magicSword);
     // mysteriousForest.setItems(healthPotion);
 
     // (std::string &name, std::string &purpose, unsigned health, unsigned weight, unsigned damage);
@@ -118,22 +118,20 @@ int main()
     Item healthPotion4("Health Potion", "Restores health.", 50, 10, 0);
 
     // set items in map
-    mysteriousForest.setItems(healthPotion1);
-    overgrownGarden.setItems(healthPotion2);
-    creepyGraveyard.setItems(healthPotion3);
-    undergroundPassage.setItems(healthPotion4);
+    mysteriousForest.setItems(&healthPotion1);
+    overgrownGarden.setItems(&healthPotion2);
+    creepyGraveyard.setItems(&healthPotion3);
+    undergroundPassage.setItems(&healthPotion4);
 
     // figure out pick up command and use health potion
 
+    //std::cout << bob.getHealth() << std::endl;
+
     // Game loop
-
-
-    //Enemy em = mysteriousForest.getEnemy();
-
-    //std::cout << "\n";
 
     while (true)
     {
+        std::cout << bob.getHealth() << std::endl;
 
         std::cout << "Enter your command: ";
         std::string command;
@@ -187,7 +185,7 @@ int main()
         else if (command == "attack")
         {
 
-            if(currentRoom->getEnemy() != NULL){
+            if(currentRoom->getEnemy() != nullptr){
 
                 if (currentRoom->getEnemy()->getEnemyHealth() <= 0)
                     {
@@ -212,17 +210,22 @@ int main()
         }
         else if (command == "examine")
         {
+        if(currentRoom->getItems() != nullptr){
             std::cout << "You search the room for items." << "\n";
-            std::cout << "You find: " << currentRoom->getItems().getItemName() << ". " << currentRoom->getItems().getPurpose() << "\n";
+            std::cout << "You find: " << currentRoom->getItems()->getItemName() << ". " << currentRoom->getItems()->getPurpose() << "\n";
             if (true /*currentRoom.hasItem(*/)
             {
                 bob.addInventory(currentRoom->getItems());
             }
+        } else{
+            std::cout << "No items found\n";
+        }
+
         }
         else if (command == "pickup")
         {
 
-            std::cout << "You picked up " << currentRoom->getItems().getItemName() << "!\n";
+            std::cout << "You picked up " << currentRoom->getItems()->getItemName() << "!\n";
             bob.addInventory(currentRoom->getItems());
         }
         else if (command == "inventory")
@@ -236,23 +239,23 @@ int main()
             std::cout << "Enter the item you want to use: ";
             std::cin >> item;
 
-            if (item == "Health Potion" && bob.getHealth() < 100)
+            if (item == "healthPotion" && bob.getHealth() < 100)
             {
                 if (bob.getInventory().empty())
                 {
                     std::cout << "You don't have any items." << "\n";
                 }
-                else if (bob.searchInventory(item))
+                else //if (bob.searchInventory(item))
                 {
                     bob.useHealthPotion(healthPotion);
                     bob.removeItem(healthPotion);
                     std::cout << "You use the Health Potion." << "\n";
                     std::cout << "Your health is now: " << bob.getHealth() << "\n";
                 }
-                else
+                /*else
                 {
                     std::cout << "You don't have any Health Potions." << "\n";
-                }
+                }*/
             }
         }
         else
