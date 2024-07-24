@@ -86,8 +86,12 @@ public:
         return charDamage;
     }
 
-    unsigned getHealth(){
+    unsigned& getHealth(){
         return charHealth;
+    }
+
+    void addHealth(unsigned h){
+        charHealth += h;
     }
 
     void setDamage(unsigned d){
@@ -105,9 +109,9 @@ public:
         enemy.printStats();
     }*/
     
-    void useHealthPotion(Item& potion){
-        this->charHealth += potion.getHealth();
-        potion.useItem();
+    void useHealthPotion(Item* potion){
+        this->charHealth += potion->getHealth();
+        potion->useItem();
     }
 
     void addInventory(Item* item){
@@ -160,7 +164,7 @@ private:
     unsigned x;
     unsigned y;
     std::vector<Item*> inventory;
-    unsigned charHealth;
+    unsigned int charHealth;
     unsigned charAttack;
     unsigned charDamage;
 

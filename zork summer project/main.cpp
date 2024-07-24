@@ -60,7 +60,7 @@ int main()
     Item magicSword("Magic Sword", "Increases attack power.", 100, 20, 10);
 
     abandonedCottage.setItems(&lantern);
-    overgrownGarden.setItems(&key);
+    //overgrownGarden.setItems(&key);
     hiddenClearing.setItems(&runestone);
     secretLibrary.setItems(&ancientTome);
     shadowyAlcove.setItems(&amulet);
@@ -131,7 +131,7 @@ int main()
 
     while (true)
     {
-        std::cout << bob.getHealth() << std::endl;
+        //std::cout << bob.getHealth() << std::endl;
 
         std::cout << "Enter your command: ";
         std::string command;
@@ -177,56 +177,85 @@ int main()
             std::cout << "west - Move West. \n";
             std::cout << "east - Move East. \n";
             std::cout << "quit - Quit the game. \n";
+            std::cout << "fight - Initiate a fight with the enemy.\n";
             std::cout << "attack - Attack the enemy. \n";
             std::cout << "examine - Search the room for items. \n";
             std::cout << "inventory - Check your inventory. \n";
         }
         // work on attack command. disply defeated enemy message bug.
-        else if (command == "attack")
+        else if (command == "fight")
         {
+            auto fightRoom = currentRoom;
+            // bool enemyAlive;
+            while (currentRoom->getEnemy()->getEnemyHealth() > 0 && fightRoom == currentRoom)
+            {   
+                //get input while in fight loop
+                std::cout << "You have initiated a fight with the enemy.\n";
 
-            if(currentRoom->getEnemy() != nullptr){
+                std::string fightCommand;
+                std::cout << "In battle\nEnter your command: ";
+                std::cin >> fightCommand;
 
-                if (currentRoom->getEnemy()->getEnemyHealth() <= 0)
+                if(fightCommand == "quit") break;
+
+                if (fightCommand == "attack")
+                {
+
+                    if (currentRoom->getEnemy() != nullptr)
                     {
-                        std::cout << "You have defeated the enemy." << "\n";
+
+                        if (currentRoom->getEnemy()->getEnemyHealth() <= 0)
+                        {
+                            std::cout << "You have defeated the enemy." << "\n";
+                        }
+                        else
+                        {
+                            std::cout << "You attack the enemy." << "\n";
+                            std::cout << currentRoom->getEnemy()->getName() << "'s stats: " << "\n";
+                            currentRoom->getEnemy()->enemyTakeDamage(bob.getDamage());
+                            currentRoom->getEnemy()->printEnemyStats();
+                            bob.playerTakeDamage(currentRoom->getEnemy()->getEnemyAttack());
+                            std::cout << "\nThe " << currentRoom->getEnemy()->getName() << " attacks you." << "\n"
+                                      << "Your stats: \n";
+                            bob.printCharStats();
+                            std::cout << "\n";
+                        }
                     }
                     else
                     {
-                        std::cout << "You attack the enemy." << "\n";
-                        std::cout << currentRoom->getEnemy()->getName() << "'s stats: " << "\n";
-                        currentRoom->getEnemy()->enemyTakeDamage(bob.getDamage());
-                        currentRoom->getEnemy()->printEnemyStats();
-                        bob.playerTakeDamage(currentRoom->getEnemy()->getEnemyAttack());
-                        std::cout << "\nThe "<< currentRoom->getEnemy()->getName() << " attacks you." << "\n"
-                                << "Your stats: \n";
-                        bob.printCharStats();
-                        std::cout << "\n";
+                        std::cout << "There is no enemy in this room." << "\n";
                     }
-            } else {
-                std::cout << "There is no enemy in this room." << "\n";
-        
+                }
             }
         }
         else if (command == "examine")
         {
-        if(currentRoom->getItems() != nullptr){
-            std::cout << "You search the room for items." << "\n";
-            std::cout << "You find: " << currentRoom->getItems()->getItemName() << ". " << currentRoom->getItems()->getPurpose() << "\n";
-            if (true /*currentRoom.hasItem(*/)
+            if (currentRoom->getItems() != nullptr)
             {
-                bob.addInventory(currentRoom->getItems());
+                std::cout << "You search the room for items." << "\n";
+                std::cout << "You find: " << currentRoom->getItems()->getItemName() << ". " << currentRoom->getItems()->getPurpose() << "\n";
+                if (true /*currentRoom.hasItem(*/)
+                {
+                    bob.addInventory(currentRoom->getItems());
+                }
             }
-        } else{
-            std::cout << "No items found\n";
-        }
-
+            else
+            {
+                std::cout << "No items found\n";
+            }
         }
         else if (command == "pickup")
         {
 
             std::cout << "You picked up " << currentRoom->getItems()->getItemName() << "!\n";
             bob.addInventory(currentRoom->getItems());
+
+            //enemy attack when pickup
+            bob.playerTakeDamage(currentRoom->getEnemy()->getEnemyAttack());
+            std::cout << "\nThe " << currentRoom->getEnemy()->getName() << " attacks you." << "\n"
+                      << "Your stats: \n";
+            bob.printCharStats();
+            std::cout << "\n";
         }
         else if (command == "inventory")
         {
@@ -239,7 +268,7 @@ int main()
             std::cout << "Enter the item you want to use: ";
             std::cin >> item;
 
-            if (item == "healthPotion" && bob.getHealth() < 100)
+            if (item == "healthPotion" && bob.getHealth() <= 100)
             {
                 if (bob.getInventory().empty())
                 {
@@ -247,15 +276,22 @@ int main()
                 }
                 else //if (bob.searchInventory(item))
                 {
-                    bob.useHealthPotion(healthPotion);
+                    bob.addHealth(20);
                     bob.removeItem(healthPotion);
                     std::cout << "You use the Health Potion." << "\n";
                     std::cout << "Your health is now: " << bob.getHealth() << "\n";
+                    
                 }
                 /*else
                 {
                     std::cout << "You don't have any Health Potions." << "\n";
                 }*/
+            } else{
+                if(item != "healthPotion"){
+                    std::cout << "invalid item";
+                } else {
+                    std::cout << "Max health reached";
+                }
             }
         }
         else
